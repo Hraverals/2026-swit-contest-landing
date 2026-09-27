@@ -13,6 +13,11 @@
  * 배경은 전부 흰색이다. 섹션마다 배경색을 바꾸지 않는다.
  * 각 정보 섹션은 Motion JS가 한 번만 아래에서 드러내며, 기본 HTML은 항상 보인다.
  */
+import {
+  APPLY_CTA_LABEL,
+  APPLY_FORM_URL,
+  REGISTRATION,
+} from '../data/registration-notice';
 import NoticeBox from './NoticeBox.astro';
 import PastGallery from './PastGallery.astro';
 import VenueMap from './VenueMap.astro';
@@ -176,7 +181,16 @@ import {
   {/* ── 7. 참가 신청 ───────────────────────────────── */}
   <section id="apply" class="section section--apply" data-scroll-reveal>
     <h2 class="heading heading--plain">참가 신청</h2>
-    <a class="apply-cta" href="https://forms.gle/uPfh6FU3BDJEsYd8A">구글폼으로 신청하기</a>
+    {
+      /* 히어로 CTA 와 같은 규칙이다. 마감이면 링크 요소 자체를 내지 않는다. */
+      REGISTRATION.closed ? (
+        <span class="apply-cta apply-cta--closed">{APPLY_CTA_LABEL.apply}</span>
+      ) : (
+        <a class="apply-cta" href={APPLY_FORM_URL}>
+          {APPLY_CTA_LABEL.apply}
+        </a>
+      )
+    }
   </section>
 </div>
 
@@ -602,9 +616,18 @@ import {
     transition: background-color 150ms ease;
   }
 
-  .apply-cta:hover,
-  .apply-cta:focus-visible {
+  /* 히어로 CTA 와 같다 — hover·focus 는 링크일 때만. */
+  a.apply-cta:hover,
+  a.apply-cta:focus-visible {
     background-color: theme(colors.orange-title);
+  }
+
+  /* 마감 상태. 색 근거는 Hero.astro 의 .cta--closed 주석 참조. */
+  .apply-cta--closed {
+    background-color: color-mix(in srgb, theme(colors.ink) 12%, theme(colors.paper));
+    color: color-mix(in srgb, theme(colors.ink) 62%, theme(colors.paper));
+    cursor: default;
+    transition: none;
   }
 
   .sr-only {

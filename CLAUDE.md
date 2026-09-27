@@ -403,9 +403,20 @@ PUBLIC_KAKAO_MAP_KEY   카카오 개발자 콘솔의 JavaScript 앱 키
 - JS 는 다섯 곳에만 쓴다 — 히어로 애니메이션, 섹션 네비게이션의 스크롤 위치 표시,
   카카오맵 로딩, `src/scripts/scroll-reveal.ts`의 본문 reveal, `RegistrationNotice`의 native
   dialog 표시·닫힘 중 스크롤 잠금. 그 밖의 동작을 JS 로 붙이지 않는다.
-- 참가 접수 상태 팝업은 `src/data/registration-notice.ts`의 `REGISTRATION_NOTICE`가 단일
-  제어점이다. `enabled: false`로 바꾸고 재빌드하면 dialog 마크업은 빠지고, Astro가 항상
-  출력하는 초기화 스크립트는 대상 노드가 없을 때 안전하게 아무 동작도 하지 않는다.
+- 참가 접수 상태는 `src/data/registration-notice.ts`가 단일 제어점이다. 필드는 두 개이며
+  축이 다르다.
+    - `REGISTRATION.closed` — 접수 마감 여부. 이 한 값이 **팝업 문구와 CTA 버튼 두 곳**
+      (히어로, '참가 신청' 섹션)을 함께 뒤집는다. 문구는 `NOTICE_OPEN` / `NOTICE_CLOSED`
+      중에서 이 값이 고르고, 버튼 문구는 `APPLY_CTA_LABEL`이 고른다.
+      마감이면 버튼을 `<a>`가 아니라 `<span>`으로 렌더한다. `href`만 비우면 구글폼 주소가
+      마크업에 남아 소스 보기로 접근할 수 있다. 마감 빌드에서는 `dist/`에 `forms.gle`가
+      0건이어야 한다.
+    - `REGISTRATION.noticeEnabled` — 팝업 표시 여부. `false`로 바꾸고 재빌드하면 dialog
+      마크업은 빠지고, Astro가 항상 출력하는 초기화 스크립트는 대상 노드가 없을 때
+      안전하게 아무 동작도 하지 않는다. 버튼 상태와는 무관하다 — 두 값을 한 필드로 합치면
+      팝업만 내리려는 조작이 마감된 버튼을 다시 열어 버린다.
+    - 마감 상태에서 CTA 글자를 흰색으로 두지 않는다. 회색 배경(ink 12%)에 흰 글씨는
+      대비가 1.32:1로 읽히지 않는다. 배경보다 진한 회색(ink 62%)으로 4.69:1을 확보했다.
 - 본문 reveal은 `#schedule`, `#venue`, `#eligibility`, `#rules`, `#prizes`, `#apply`에만
   `data-scroll-reveal`을 붙인다. Hero, stage, 제목, SectionNav, 네비게이션 필, 개별 행·지도,
   개별 로고, footer에는 붙이지 않는다.
