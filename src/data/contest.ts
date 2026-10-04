@@ -171,8 +171,9 @@ export const RULES: { allowed: RuleItem[]; forbidden: string[] } = {
         { text: "본인이 지참한 노트북으로 문제 풀이 진행" },
         { text: "ICPC 평가 기준에 의거해 대회 진행" },
         {
-            text: "프로그래밍 언어 선택 자유, IDE 사용 가능, 사전에 작성한 팀 노트 허용",
+            text: "사용 가능 언어: C, C++, C#, Java, Python, JavaScript, Rust, Go",
         },
+        { text: "IDE 사용 가능, 사전에 작성한 팀 노트 허용" },
     ],
     forbidden: [
         "ChatGPT, Claude 등 자동으로 소스 코드를 작성해주는 서비스 사용 금지",
